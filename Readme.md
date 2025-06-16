@@ -95,6 +95,8 @@ NODE_ENV=development
 - **PUT** `/doctors/:id` - Update doctor
 - **DELETE** `/doctors/:id` - Delete doctor
 
+
+
 ### Patient-Doctor Mappings
 *Requires Authorization header: `Bearer <token>`*
 
@@ -157,3 +159,7 @@ The API handles the following error types:
 - Authentication errors
 - Not found errors
 - Server errors
+
+## POSTMAN TESTING IS DONE
+
+![POSTMAN TESTING COMPLETED](/public/images/postmantesting.png)

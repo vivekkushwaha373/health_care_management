@@ -58,12 +58,6 @@ const getDoctors = async (req, res) => {
     try {
         const doctors = await Doctor.findAll({
             where: { isActive: true },
-            // include: [{
-            //     model: Patient,
-            //     as: 'patients',
-            //     attributes: ['id', 'firstName', 'lastName'],
-            //     through: { attributes: [] }
-            // }],
             order: [['createdAt', 'DESC']]
         });
 
@@ -88,12 +82,7 @@ const getDoctorById = async (req, res) => {
                 id: req.params.id,
                 isActive: true
             },
-            include: [{
-                model: Patient,
-                as: 'patients',
-                attributes: ['id', 'firstName', 'lastName', 'email', 'phone'],
-                through: { attributes: ['assignedDate', 'notes'] }
-            }]
+           
         });
 
         if (!doctor) {

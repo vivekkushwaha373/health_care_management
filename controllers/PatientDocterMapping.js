@@ -11,7 +11,6 @@ const createMapping = async (req, res) => {
         const patient = await Patient.findOne({
             where: {
                 id: patientId,
-                createdBy: req.user.id
             }
         });
 
@@ -44,20 +43,7 @@ const createMapping = async (req, res) => {
             notes
         });
 
-        const mappingWithDetails = await PatientDoctorMapping.findByPk(mapping.id, {
-            include: [
-                {
-                    model: Patient,
-                    as: 'patient',
-                    attributes: ['id', 'firstName', 'lastName']
-                },
-                {
-                    model: Doctor,
-                    as: 'doctor',
-                    attributes: ['id', 'firstName', 'lastName', 'specialization']
-                }
-            ]
-        });
+        const mappingWithDetails = await PatientDoctorMapping.findByPk(mapping.id);
 
         res.status(201).json({
             success: true,
@@ -85,19 +71,6 @@ const getMappings = async (req, res) => {
     try {
         const mappings = await PatientDoctorMapping.findAll({
             where: { isActive: true },
-            include: [
-                {
-                    model: Patient,
-                    as: 'patient',
-                    attributes: ['id', 'firstName', 'lastName', 'email'],
-                    where: { createdBy: req.user.id }
-                },
-                {
-                    model: Doctor,
-                    as: 'doctor',
-                    attributes: ['id', 'firstName', 'lastName', 'specialization', 'email']
-                }
-            ],
             order: [['assignedDate', 'DESC']]
         });
 
@@ -123,7 +96,7 @@ const getDoctorsByPatient = async (req, res) => {
         const patient = await Patient.findOne({
             where: {
                 id: patientId,
-                createdBy: req.user.id
+               
             }
         });
 
@@ -139,13 +112,6 @@ const getDoctorsByPatient = async (req, res) => {
                 patientId,
                 isActive: true
             },
-            include: [
-                {
-                    model: Doctor,
-                    as: 'doctor',
-                    attributes: ['id', 'firstName', 'lastName', 'specialization', 'email', 'phone']
-                }
-            ],
             order: [['assignedDate', 'DESC']]
         });
 
@@ -169,11 +135,6 @@ const deleteMapping = async (req, res) => {
     try {
         const mapping = await PatientDoctorMapping.findOne({
             where: { id: req.params.id },
-            include: [{
-                model: Patient,
-                as: 'patient',
-                where: { createdBy: req.user.id }
-            }]
         });
 
         if (!mapping) {

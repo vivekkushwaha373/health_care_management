@@ -75,7 +75,7 @@ const getPatientById = async (req, res) => {
         const patient = await Patient.findOne({
             where: {
                 id: req.params.id,
-                // createdBy: req.user.id
+               
             },
             
         });
